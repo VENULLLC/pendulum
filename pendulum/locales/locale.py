@@ -37,11 +37,12 @@ class Locale:
         # Checking locale existence
         actual_locale = locale
         locale_path = os.path.join(os.path.dirname(__file__), actual_locale)
-        while not os.path.exists(locale_path):
-            if actual_locale == locale:
-                raise ValueError("Locale [{}] does not exist.".format(locale))
+        #print(locale_path, actual_locale)
+        #while not os.path.exists(locale_path):
+        #    if actual_locale == locale:
+        #        raise ValueError("Locale [{}] does not exist.".format(locale))
 
-            actual_locale = actual_locale.split("_")[0]
+        #    actual_locale = actual_locale.split("_")[0]
 
         m = import_module("pendulum.locales.{}.locale".format(actual_locale))
 
