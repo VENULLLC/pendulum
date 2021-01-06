@@ -15,6 +15,10 @@
 
 /* ------------------------------------------------------------------------- */
 
+#if PY_MAJOR_VERSION >= 3
+#define PY3K
+#endif
+
 #define EPOCH_YEAR 1970
 
 #define DAYS_PER_N_YEAR 365
@@ -1319,6 +1323,7 @@ static PyMethodDef helpers_methods[] = {
 
 /* ------------------------------------------------------------------------- */
 
+#ifdef PY3K
 static struct PyModuleDef moduledef = {
     PyModuleDef_HEAD_INIT,
     "_iso8601",
@@ -1330,6 +1335,7 @@ static struct PyModuleDef moduledef = {
     NULL,
     NULL,
 };
+#endif
 
 PyMODINIT_FUNC
 PyInit__iso8601(void)
@@ -1338,7 +1344,11 @@ PyInit__iso8601(void)
 
     PyDateTime_IMPORT;
 
+#ifdef PY3K
     module = PyModule_Create(&moduledef);
+#else
+    module = Py_InitModule3("_iso8601", helpers_methods, NULL);
+#endif
 
     if (module == NULL)
         return NULL;
