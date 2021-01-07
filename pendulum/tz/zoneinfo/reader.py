@@ -159,7 +159,7 @@ class Reader:
                 'The file "{}" has an invalid version.'.format(fd.name)
             )
 
-        hdr = header(version, *unpack(">6l", buff[20:44]))
+        hdr = header(version, *unpack(">6l", bytes(buff[20:44])))
 
         return hdr
 
@@ -167,7 +167,7 @@ class Reader:
         trans = []
         for _ in range(n):
             buff = self._check_read(fd, 8)
-            trans.append(unpack(">q", buff)[0])
+            trans.append(unpack(">q", bytes(buff))[0])
 
         return trans
 
@@ -175,14 +175,14 @@ class Reader:
         trans = []
         for _ in range(n):
             buff = self._check_read(fd, 4)
-            trans.append(unpack(">i", buff)[0])
+            trans.append(unpack(">i", bytes(buff))[0])
 
         return trans
 
     def _parse_type_idx(self, fd, n):  # type: (IO[Any], int) -> List[int]
         buff = self._check_read(fd, n)
 
-        return list(unpack("{}B".format(n), buff))
+        return list(unpack("{}B".format(n), bytes(buff)))
 
     def _parse_types(
         self, fd, n
@@ -191,7 +191,7 @@ class Reader:
 
         for _ in range(n):
             buff = self._check_read(fd, 6)
-            offset = unpack(">l", buff[:4])[0]
+            offset = unpack(">l", bytes(buff[:4]))[0]
             is_dst = buff[4] == 1
             types.append((offset, is_dst, buff[5]))
 
